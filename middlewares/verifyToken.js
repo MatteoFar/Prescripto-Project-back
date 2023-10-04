@@ -1,9 +1,10 @@
-const jwt = require("jsonwebtoken")
-const dotenv = require("dotenv")
+import dotenv from "dotenv"
+import jwt from "jsonwebtoken"
+
 
 dotenv.config()
 
-module.exports = function verifyToken(req, res, next) {
+export default function verifyToken(req, res, next) {
     if(!req.headers.authorization) {
         return res.status(403).send({type:"error", message:"Access denied! you must be authentificated"})
     }

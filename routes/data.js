@@ -1,10 +1,9 @@
-const express = require("express")
-const mysql = require("mysql")
-const bcrypt = require("bcrypt")
-const moment = require("moment")
-const jwt = require("jsonwebtoken")
-const dotenv = require("dotenv")
-const verifyToken = require("../middlewares/verifyToken.js")
+import mysql from "mysql"
+import dotenv from "dotenv"
+import express from "express"
+import moment from "moment"
+
+import verifyToken from "../middlewares/verifyToken.js"
 
 dotenv.config()
 
@@ -188,5 +187,4 @@ function deletePrescriptionDrugUptake(req,res) {
 
 
 
-
-module.exports = router
+export default router;

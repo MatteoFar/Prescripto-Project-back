@@ -1,9 +1,9 @@
-const express = require("express")
-const mysql = require("mysql")
-const bcrypt = require("bcrypt")
-const moment = require("moment")
-const jwt = require("jsonwebtoken")
-const dotenv = require("dotenv")
+import mysql from "mysql"
+import dotenv from "dotenv"
+import express from "express"
+import jwt from "jsonwebtoken"
+import moment from "moment"
+import bcrypt from "bcrypt"
 
 dotenv.config()
 
@@ -83,4 +83,4 @@ function postUsers(req, res) {
 // login doctor
 // signup doctor
 
-module.exports = router
+export default router;
