@@ -1,6 +1,38 @@
 import bcrypt from "bcrypt"
 import { poolPromise } from "../../config/db.js";
+import jwt from "jsonwebtoken"
 import moment from "moment";
+
+export async function authenticateUser(user) {
+    try {
+    //Check in database if a user with this email exists
+    let check_user = await getByEmail(user.email);
+  
+    // If the email doesn't exist in the database, throw an error with "Invalid Credentials" message
+    if (check_user.length === 0) {
+      throw { status: "401", message: "Invalid Credentials" };
+    }
+
+    const hashCompare = await bcrypt.compare(user.password, check_user[0].password)
+  
+    // Compare the password provided by the user with the hashed password stored in the database
+    if (!hashCompare) {
+      throw { status: "401", message: "Invalid Credentials" };
+    }
+
+    console.log(check_user)
+  
+    //Generate an authentification token for the new user
+    let token = jwt.sign({ userId: check_user[0].Id_Users }, process.env.JWT_SECRET_TOKEN);
+  
+    //Return the authentification token
+    return token;
+
+    } catch (error) {
+        console.error('err',error)
+        throw error
+    }
+  }
 
 export async function addUser(user) {
     try {
@@ -26,7 +58,7 @@ export async function addUser(user) {
 }
 
 export async function getByEmail(email) {
-    let query = "SELECT email from users where email=?";
+    let query = "SELECT * from users where email=?";
     const result = await poolPromise.query(query, [email]);
     return result[0];
   }
