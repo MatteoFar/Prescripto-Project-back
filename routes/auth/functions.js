@@ -54,7 +54,7 @@ export async function authenticateUser(user) {
     console.log(check_user)
   
     //Generate an authentification token for the new user
-    let token = jwt.sign({ userId: check_user[0].Id_Users }, process.env.JWT_SECRET_TOKEN);
+    let token = jwt.sign({ userId: check_user[0].Id_Doctor }, process.env.JWT_SECRET_TOKEN);
   
     //Return the authentification token
     return token;
