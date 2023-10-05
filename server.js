@@ -1,14 +1,17 @@
-const mysql = require("mysql")
-const dotenv = require("dotenv")
-const express = require("express")
-const cors = require("cors")
+import mysql from "mysql"
+import dotenv from "dotenv"
+import express from "express"
+import cors from "cors"
 
 dotenv.config()
 
 const app = express()
 
-const auth = require("./routes/auth.js")
-const data = require("./routes/data")
+import auth from "./routes/auth.js"
+import data from "./routes/data.js"
+
+//cron
+import "./cron/sync_prescription_uptake.js"
 
 
 const PORT = process.env.PORT
@@ -35,4 +38,4 @@ app.listen(PORT, function () {
     console.log(`Example app listening on port ! ${PORT}`);
    });
 
-module.exports = connection;
+export default connection;
