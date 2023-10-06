@@ -59,8 +59,6 @@ async function syncCronPrescriptionUptakes() {
   
 }
 
-
-
-cron.schedule('* * * * *', () => {
-  syncCronPrescriptionUptakes()
-});
+// cron.schedule('* * * * *', () => {
+//   syncCronPrescriptionUptakes()
+// });
