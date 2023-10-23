@@ -38,6 +38,33 @@ export async function getIncomingAppointement(data) {
     }
 }
 
+export async function getAppointementHistory(data) {
+    try {
+        const dataAppointement = getIncomingAppointementHistoryUser(data)
+        return dataAppointement
+    } catch (error) {
+        console.error('err',error)
+        throw error
+    }
+}
+
+export async function getIncomingAppointementHistoryUser(data) {
+    try {
+        const dateTimeToday = moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
+        console.log('dateTimeToday', dateTimeToday)
+        const query = 'SELECT * from appointement where Id_Users=? and validation=1 and ? > date_meeting'
+
+        const {users_id} = data
+
+        const result = await poolPromise.query(query, [users_id, dateTimeToday]);
+
+        return result[0]
+    } catch (error) {
+        console.error('err',error)
+        throw error
+    }
+}
+
 export async function getIncomingAppointementUser(data) {
     try {
         const query = 'SELECT * from appointement where Id_Users=?'
