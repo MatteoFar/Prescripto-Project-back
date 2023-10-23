@@ -1,6 +1,4 @@
-import bcrypt from "bcrypt"
 import { poolPromise } from "../../config/db.js";
-import jwt from "jsonwebtoken"
 import moment from "moment";
 
 /// post Appointement

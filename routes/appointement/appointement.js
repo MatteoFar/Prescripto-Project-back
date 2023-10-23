@@ -1,7 +1,6 @@
 import dotenv from "dotenv"
 import express from "express"
 
-import { poolPromise } from "../../config/db.js";
 import { getAppointementHistory, getIncomingAppointement, postAppoitement } from "./function.js";
 
 dotenv.config()
