@@ -8,7 +8,7 @@ dotenv.config()
 
 const router = express.Router()
 
-router.get("/appointements/:users_id", async (req, res) => {
+router.get("/incomingAppointements/:users_id", async (req, res) => {
     try {
         const p = await getIncomingAppointement(req.params)
         console.log('pppppp',p)
@@ -28,7 +28,7 @@ router.get("/appointementsHistory/:users_id", async (req, res) => {
     }
 })
 
-router.post("/appointements", async (req,res) => {
+router.post("/postAppointements", async (req,res) => {
     try {
         const p = await postAppoitement(req.body)
         console.log('pppppp', p)

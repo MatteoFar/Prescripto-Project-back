@@ -27,7 +27,7 @@ app.use(bodyParser.json());
 app.use("/auth", auth)
 app.use("/data", data)
 app.use("/search", search)
-app.use("/account", appointement)
+app.use("/appointement", appointement)
 
 const connection = mysql.createConnection({ // mettre dans un fichier appart
     host: process.env.DB_HOST,
