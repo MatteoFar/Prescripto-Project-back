@@ -11,7 +11,7 @@ dotenv.config()
 
 const router = express.Router()
 
-const errorType = "API"
+const errorType = "API" // put on file 
 const messageErrorsDatabases = "Something went wrong"
 
 // login

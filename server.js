@@ -10,6 +10,7 @@ const app = express()
 
 import auth from "./routes/auth/auth.js"
 import data from "./routes/data.js"
+import search from "./routes/search/search.js"
 
 //cron
 import "./cron/sync_prescription_uptake.js"
@@ -24,6 +25,7 @@ app.use(bodyParser.json());
 
 app.use("/auth", auth)
 app.use("/data", data)
+app.use("/search", search)
 
 const connection = mysql.createConnection({ // mettre dans un fichier appart
     host: process.env.DB_HOST,
