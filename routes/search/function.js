@@ -21,5 +21,4 @@ export async function getDoctorBySearch(data) {
         console.error(error)
         throw error
     }
-    
 }
