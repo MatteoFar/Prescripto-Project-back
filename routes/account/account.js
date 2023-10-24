@@ -1,7 +1,8 @@
 import dotenv from "dotenv"
 import express from "express"
 
-import { getDoctorInfo, getUserInfo, putDoctorInfo, putDoctorPassword, putUserInfo, putUserPassword } from "./function.js";
+import { deleteAccount, getDoctorInfo, getUserInfo, putDoctorInfo, putDoctorPassword, putUserInfo, putUserPassword } from "./function.js";
+import verifyToken from "../../middlewares/verifyToken.js";
 
 dotenv.config()
 
@@ -43,6 +44,17 @@ router.put("/changePassword/:users_id", async(req, res) => {
     }
 })
 
+router.delete("/deleteAccount", verifyToken, async( req, res ) => {
+    try {
+        await deleteAccount(req.body)
+        res.status(200).send({message : 'Compte supprimé avec succée !'})
+    } catch (error) {
+        res.status(500).send(error)
+        console.error("err", error)
+        throw error
+    }
+})
+
 // Doctor account
 router.get("/doctor/:doctor_id", async(req, res) => {
     try {
@@ -56,7 +68,7 @@ router.get("/doctor/:doctor_id", async(req, res) => {
 
 router.put("/doctor/:doctor_id", async(req, res) => {
     try {
-        const p = await putDoctorInfo(req.body, req.params)
+        await putDoctorInfo(req.body, req.params)
         res.status(200).send({message : 'Informations mis à jour avec succée !'})
     } catch (error) {
         res.status(500).send(error)
@@ -67,7 +79,7 @@ router.put("/doctor/:doctor_id", async(req, res) => {
 
 router.put("/doctor/changePassword/:doctor_id", async(req, res) => {
     try {
-        const p = await putDoctorPassword(req.body, req.params)
+        await putDoctorPassword(req.body, req.params)
         res.status(200).send({message : 'Informations mis à jour avec succée !'})
     } catch (error) {
         res.status(500).send(error)

@@ -1,6 +1,7 @@
 import { poolPromise } from "../../config/db.js";
 import bcrypt from "bcrypt"
 import { checkPassword } from "../utility/function.js";
+import jwt from "jsonwebtoken"
 
 // GET routes INFO
 export async function getUserInfo(data) {
@@ -92,6 +93,31 @@ export async function putUserPassword(data, dataParams) {
             return result[0]
         }
         throw { status: "401", message: "Invalid Credentials" }; // trouver une alternative
+    } catch (error) {
+        console.error('err', error)
+        throw error
+    }
+}
+
+// Delete Account
+
+export async function deleteAccount(data) {
+    try {
+        let firstPropertyName;
+        for (let propertyName in data.id) {
+            firstPropertyName = propertyName;
+            break;
+        }
+          
+        if(firstPropertyName === 'userId') {
+            const id = data.id
+            const query = 'DELETE FROM users WHERE Id_Users=?;'
+            await poolPromise.query(query, [id.userId]);
+        } else {
+            const id = data.id
+            const query = 'DELETE FROM doctor WHERE Id_Doctor=?;'
+            await poolPromise.query(query, [id.doctorId]);
+        }
     } catch (error) {
         console.error('err', error)
         throw error
