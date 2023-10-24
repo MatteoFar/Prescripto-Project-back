@@ -12,8 +12,8 @@ export default function verifyToken(req, res, next) {
     console.log('1')
     try {
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET_TOKEN);
-        console.log('MIDDLEWARE',req.body)
-        req.body.user_id = decodedToken.user_id
+        console.log(decodedToken)
+        req.body.id = decodedToken
         next()
     } catch (error) {
         console.log('2')
