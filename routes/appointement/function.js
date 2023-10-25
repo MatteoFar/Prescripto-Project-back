@@ -46,6 +46,32 @@ export async function getAppointementHistory(data) {
     }
 }
 
+export async function getStandyByAppointement(data) {
+    try {
+        const dataAppointement = getIncomingAppointementDoctor(data)
+        return dataAppointement
+    } catch (error) {
+        console.error('err',error)
+        throw error
+    }
+}
+
+export async function getIncomingAppointementDoctor(data) {
+    try {
+        const dateTimeToday = moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
+        const query = 'SELECT * from appointement where Id_Doctor=? and validation=0 and ? < date_meeting'
+
+        const {id} = data
+
+        const result = await poolPromise.query(query, [id.doctorId, dateTimeToday]);
+
+        return result[0]
+    } catch (error) {
+        console.error('err',error)
+        throw error
+    }
+}
+
 export async function getIncomingAppointementHistoryUser(data) {
     try {
         const dateTimeToday = moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
