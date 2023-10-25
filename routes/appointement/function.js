@@ -46,32 +46,6 @@ export async function getAppointementHistory(data) {
     }
 }
 
-export async function getStandyByAppointement(data) {
-    try {
-        const dataAppointement = getIncomingAppointementDoctor(data)
-        return dataAppointement
-    } catch (error) {
-        console.error('err',error)
-        throw error
-    }
-}
-
-export async function getIncomingAppointementDoctor(data) {
-    try {
-        const dateTimeToday = moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
-        const query = 'SELECT * from appointement where Id_Doctor=? and validation=0 and ? < date_meeting'
-
-        const {id} = data
-
-        const result = await poolPromise.query(query, [id.doctorId, dateTimeToday]);
-
-        return result[0]
-    } catch (error) {
-        console.error('err',error)
-        throw error
-    }
-}
-
 export async function getIncomingAppointementHistoryUser(data) {
     try {
         const dateTimeToday = moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
@@ -104,3 +78,56 @@ export async function getIncomingAppointementUser(data) {
     }
 }
 
+// DOCTOR FUNCTIONS
+// get appointement
+export async function getStandyByAppointement(data) {
+    try {
+        const dataAppointement = getIncomingAppointementDoctor(data)
+        return dataAppointement
+    } catch (error) {
+        console.error('err',error)
+        throw error
+    }
+}
+
+export async function getIncomingAppointementDoctor(data) {
+    try {
+        const dateTimeToday = moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
+        const query = 'SELECT * from appointement where Id_Doctor=? and validation=0 and ? < date_meeting'
+
+        const {id} = data
+
+        const result = await poolPromise.query(query, [id.doctorId, dateTimeToday]);
+
+        return result[0]
+    } catch (error) {
+        console.error('err',error)
+        throw error
+    }
+}
+
+// put appointement
+export async function putValidateAppointementDoctor(data, params) {
+    try {
+        const dataAppointement = await putValidateAppointement(data, params)
+        return dataAppointement
+    } catch (error) {
+        console.error('err',error)
+        throw error
+    }
+}
+
+export async function putValidateAppointement(data, params) {
+    try {
+        const query = 'UPDATE appointement SET validation=? where Id_Doctor=? and Id_Users=?'
+
+        const {id} = data
+
+        const result = await poolPromise.query(query, [1, id.doctorId, params.user_id]);
+
+        return result[0]
+    } catch (error) {
+        console.error('err',error)
+        throw error
+    }
+}

@@ -1,7 +1,7 @@
 import dotenv from "dotenv"
 import express from "express"
 
-import { getAppointementHistory, getIncomingAppointement, getStandyByAppointement, postAppoitement } from "./function.js";
+import { getAppointementHistory, getIncomingAppointement, getStandyByAppointement, postAppoitement, postValidateAppointementDoctor, putValidateAppointementDoctor } from "./function.js";
 import verifyToken from "../../middlewares/verifyToken.js";
 
 dotenv.config()
@@ -45,6 +45,16 @@ router.get("/getStandyByAppointement", verifyToken, async (req, res) => {
         const p = await getStandyByAppointement(req.body)
         console.log('pppppp',p)
         res.status(200).send({data : p})
+    } catch (error) {
+        res.status(500).send({type: error.status, message: error.message})
+    }
+})
+
+router.put("/putValidateAppointement/:user_id", verifyToken, async (req, res) => {
+    try {
+        const p = await putValidateAppointementDoctor(req.body, req.params)
+        console.log('pppppp',p)
+        res.status(200).send('rendez-vous accepté !')
     } catch (error) {
         res.status(500).send({type: error.status, message: error.message})
     }
