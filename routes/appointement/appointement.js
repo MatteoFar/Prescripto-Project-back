@@ -1,7 +1,7 @@
 import dotenv from "dotenv"
 import express from "express"
 
-import { getAppointementHistory, getIncomingAppointement, getStandyByAppointement, postAppoitement, postValidateAppointementDoctor, putValidateAppointementDoctor } from "./function.js";
+import { getAppointementHistory, getIncomingAppointement, getStandyByAppointement, postAppoitement, putValidateAppointementDoctor } from "./function.js";
 import verifyToken from "../../middlewares/verifyToken.js";
 
 dotenv.config()

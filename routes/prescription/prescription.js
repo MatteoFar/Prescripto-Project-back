@@ -3,7 +3,8 @@ import dotenv from "dotenv"
 import express from "express"
 import moment from "moment"
 
-import verifyToken from "../middlewares/verifyToken.js"
+import verifyToken from "../../middlewares/verifyToken.js"
+import { postPrescription } from "./functions.js"
 
 dotenv.config()
 
@@ -20,7 +21,16 @@ connection.connect((error)=>{
     if(error) throw error;
 });
 
-router.post("/prescriptionDrug", verifyToken, postPrescription)
+router.post("/postPrescriptionDrug", verifyToken, async (req, res) => {
+    try {
+        const p = await postPrescription(req.body)
+        console.log('pppppp',p)
+        res.status(200).send("Médicament ajouté dans l'ordonnance avec succée !")
+    } catch (error) {
+        res.status(500).send({type: error.status, message: error.message})
+    }
+} )
+
 router.get("/getPrescriptionDrug", verifyToken, getPrescriptionDrug)
 router.put("/putPrescriptionDrug", verifyToken, putPrescriptionDrug)
 router.delete("/deletePrescriptionDrug", verifyToken, deletePrescriptionDrug)
@@ -32,27 +42,7 @@ router.delete("/deletePrescriptionDrugUptake", verifyToken, deletePrescriptionDr
 const errorType = "database"
 const messageErrorsDatabases = "Erreur with database"
 
-function postPrescription(req, res) {
-    const { user_id, drug_name, quantity_mg, time, tablets } = req.body
-    connection.query(`INSERT INTO prescription_drug (user_id,drug_name, quantity_mg, tablet, time) VALUES ('${user_id}','${drug_name}', '${quantity_mg}', '${tablets}', '[${time.map((e) => `"${e}"`)}]')`, function(error) {
-        if(error) {
-            res.status(500).send({type: errorType, message: messageErrorsDatabases})
-            throw error
-        }
-        time.map((e) => {
-        let time = e.split(":")
-        const t = moment().set('hours', time[0]).set('minutes', time[1]).set('second', 0).format('YYYY-MM-DD HH:mm:ss')
 
-        connection.query(`INSERT INTO prescription_drug_uptake (user_id, drug_name, quantity_mg, tablet, date, validation) VALUES ('${user_id}','${drug_name}', '${quantity_mg}', '${tablets}', '${t}', '0')`, function(error) {
-                if(error) {
-                    res.status(500).send({type: errorType, message: messageErrorsDatabases})
-                    throw error
-                }
-            })
-        })
-        res.status(200).send({type: "success", message:"prescription_drug added with success !"})
-    })
-}
 
 function getPrescriptionDrug(req, res) {
     const {user_id} = req.body
