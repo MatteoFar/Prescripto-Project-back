@@ -2,6 +2,19 @@ import { poolPromise } from "../../config/db.js";
 import _ from "lodash";
 import moment from "moment";
 
+export async function getPrescription(Id_Users, id) {
+    try {
+        console.log(Id_Users, id)
+        const query = `Select * from prescription_drug where Id_Users=?`
+        const result = await poolPromise.query(query, [id.doctorId, Id_Users]);
+
+        return result[0]
+    } catch (error) {
+        console.error('err',error)
+        throw error
+    }
+}
+
 export async function getPrescriptionByDoctor(Id_Users, id) {
     try {
         console.log(Id_Users, id)
@@ -10,7 +23,8 @@ export async function getPrescriptionByDoctor(Id_Users, id) {
 
         return result[0]
     } catch (error) {
-        
+        console.error('err',error)
+        throw error
     }
 }
 
@@ -23,7 +37,8 @@ export async function postPatient_monitoring(Id_Users, id) {
 
         return result[0]
     } catch (error) {
-        
+        console.error('err',error)
+        throw error
     }
 }
 
