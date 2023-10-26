@@ -25,7 +25,7 @@ router.post("/postPrescriptionDrug", verifyToken, async (req, res) => {
     try {
         const p = await postPrescription(req.body)
         console.log('pppppp',p)
-        res.status(200).send("Médicament ajouté dans l'ordonnance avec succée !")
+        res.status(200).send("Médicament et la prise ont été ajoutés dans l'ordonnance avec succée !")
     } catch (error) {
         res.status(500).send({type: error.status, message: error.message})
     }
