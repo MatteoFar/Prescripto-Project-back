@@ -40,6 +40,18 @@ export async function getPrescriptionDrugUptake(params) {
     }
 }
 
+export async function getIncomingPrescriptionDrugUptake(params) {
+    try {
+        const query = `Select * from prescription_drug_uptake where Id_Users=? and validation=0`
+        const result = await poolPromise.query(query, [params.user_id]);
+
+        return result[0]
+    } catch (error) {
+        console.error('err',error)
+        throw error
+    }
+}
+
 
 export async function postPatient_monitoring(Id_Users, id) {
     try {
@@ -109,4 +121,17 @@ export async function postPrescription(data) {
         throw error
     }
 
+}
+
+export async function putPrescriptionDrugUptake(data) {
+    try {
+        const {Id_Prescription_drug_uptake, id} = data
+        let query = 'UPDATE prescription_drug_uptake SET validation=1 where Id_Prescription_drug_uptake= ? and Id_Users= ?'
+        const result = await poolPromise.query(query, [Id_Prescription_drug_uptake,id.userId]);
+
+        return result[0]
+    } catch (error) {
+        console.error('err',error)
+        throw error
+    }
 }

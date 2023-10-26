@@ -4,7 +4,7 @@ import express from "express"
 import moment from "moment"
 
 import verifyToken from "../../middlewares/verifyToken.js"
-import { getPrescriptionDrugUptake, postPrescription } from "./functions.js"
+import { getIncomingPrescriptionDrugUptake, getPrescriptionDrugUptake, postPrescription, putPrescriptionDrugUptake } from "./functions.js"
 
 dotenv.config()
 
@@ -38,6 +38,27 @@ router.get("/getPrescriptionDrugUptake/:user_id", verifyToken, async (req, res) 
         const p = await getPrescriptionDrugUptake(req.params)
         console.log('pppppp',p)
         res.status(200).send({data : p})
+    } catch (error) {
+        res.status(500).send({type: error.status, message: error.message})
+    }
+})
+
+//incoming PrescriptionDrugUptake
+router.get("/getIncomingPrescriptionDrugUptake/:user_id", verifyToken, async (req, res) => {
+    try {
+        const p = await getIncomingPrescriptionDrugUptake(req.params)
+        console.log('pppppp',p)
+        res.status(200).send({data : p})
+    } catch (error) {
+        res.status(500).send({type: error.status, message: error.message})
+    }
+})
+
+router.put("/putPrescriptionDrugUptake", verifyToken, async (req, res) => {
+    try {
+        const p = await putPrescriptionDrugUptake(req.body)
+        console.log('pppppp',p)
+        res.status(200).send("Prise de médicaments enregistrée avec succée !")
     } catch (error) {
         res.status(500).send({type: error.status, message: error.message})
     }
