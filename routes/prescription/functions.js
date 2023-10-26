@@ -6,7 +6,7 @@ export async function getPrescription(Id_Users, id) {
     try {
         console.log(Id_Users, id)
         const query = `Select * from prescription_drug where Id_Users=?`
-        const result = await poolPromise.query(query, [id.doctorId, Id_Users]);
+        const result = await poolPromise.query(query, [Id_Users]);
 
         return result[0]
     } catch (error) {
@@ -25,6 +25,18 @@ export async function getPrescriptionByDoctor(Id_Users, id) {
     } catch (error) {
         console.error('err',error)
         throw error
+    }
+}
+
+
+export async function getPrescriptionDrugUptake(params) {
+    try {
+        const query = `Select * from prescription_drug_uptake where Id_Users=?`
+        const result = await poolPromise.query(query, [params.user_id]);
+
+        return result[0]
+    } catch (error) {
+        
     }
 }
 

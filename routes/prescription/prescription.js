@@ -4,7 +4,7 @@ import express from "express"
 import moment from "moment"
 
 import verifyToken from "../../middlewares/verifyToken.js"
-import { postPrescription } from "./functions.js"
+import { getPrescriptionDrugUptake, postPrescription } from "./functions.js"
 
 dotenv.config()
 
@@ -21,6 +21,8 @@ connection.connect((error)=>{
     if(error) throw error;
 });
 
+// Doctor
+// post postPrescriptionDrug and postPrescriptionDrug_uptake
 router.post("/postPrescriptionDrug", verifyToken, async (req, res) => {
     try {
         const p = await postPrescription(req.body)
@@ -29,14 +31,26 @@ router.post("/postPrescriptionDrug", verifyToken, async (req, res) => {
     } catch (error) {
         res.status(500).send({type: error.status, message: error.message})
     }
-} )
+})
+
+router.get("/getPrescriptionDrugUptake/:user_id", verifyToken, async (req, res) => {
+    try {
+        const p = await getPrescriptionDrugUptake(req.params)
+        console.log('pppppp',p)
+        res.status(200).send({data : p})
+    } catch (error) {
+        res.status(500).send({type: error.status, message: error.message})
+    }
+})
+
+
+
 
 router.get("/getPrescriptionDrug", verifyToken, getPrescriptionDrug)
 router.put("/putPrescriptionDrug", verifyToken, putPrescriptionDrug)
 router.delete("/deletePrescriptionDrug", verifyToken, deletePrescriptionDrug)
 
 router.post("/postPrescriptionDrugUptake", verifyToken, postPrescriptionDrugUptake)
-router.get("/getPrescriptionDrugUptake", verifyToken, getPrescriptionDrugUptake)
 router.delete("/deletePrescriptionDrugUptake", verifyToken, deletePrescriptionDrugUptake)
 
 const errorType = "database"
@@ -152,16 +166,16 @@ function postPrescriptionDrugUptake(req, res) {
     // si la date du envoyée est différante de la date inscrit dans la table lancer la requete qui va ajouter les dates du jours
 }
 
-function getPrescriptionDrugUptake(req, res) {
-    const { user_id } = req.body
-    connection.query(`SELECT * from prescription_drug_uptake where user_id = ${user_id}`,function (errors, results) {
-        if(errors) {
-            res.status(500).send({type: errorType, message: messageErrorsDatabases})
-            throw errors
-        }
-        res.status(200).send({type:"success", results})
-    })
-}
+// function getPrescriptionDrugUptake(req, res) {
+//     const { user_id } = req.body
+//     connection.query(`SELECT * from prescription_drug_uptake where user_id = ${user_id}`,function (errors, results) {
+//         if(errors) {
+//             res.status(500).send({type: errorType, message: messageErrorsDatabases})
+//             throw errors
+//         }
+//         res.status(200).send({type:"success", results})
+//     })
+// }
 
 function deletePrescriptionDrugUptake(req,res) {
     const { payload } = req.body
