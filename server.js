@@ -13,6 +13,7 @@ import prescription from "./routes/prescription/prescription.js"
 import search from "./routes/search/search.js"
 import appointement from "./routes/appointement/appointement.js"
 import account from "./routes/account/account.js"
+import symptom from "./routes/symptom/symptom.js"
 
 //cron
 import "./cron/sync_prescription_uptake.js"
@@ -29,7 +30,8 @@ app.use("/auth", auth)
 app.use("/prescription", prescription)
 app.use("/search", search)
 app.use("/appointement", appointement)
-app.use("/account", account )
+app.use("/account", account)
+app.use("/symptom", symptom)
 
 const connection = mysql.createConnection({ // mettre dans un fichier appart
     host: process.env.DB_HOST,
