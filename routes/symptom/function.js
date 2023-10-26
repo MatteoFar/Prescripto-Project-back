@@ -15,6 +15,19 @@ export async function getSymptom(Id_Users) {
     }
 }
 
+export async function getLastsSymptom(Id_Users) {
+    try {
+        console.log(Id_Users)
+        const query = `Select * from symptoms where Id_Users=? ORDER BY date_symptom DESC LIMIT 5`
+        const result = await poolPromise.query(query, [Id_Users.user_id]);
+
+        return result[0]
+    } catch (error) {
+        console.error('err',error)
+        throw error
+    }
+}
+
 export async function postSymptom(data) {
     try {
         const {symptom_name, date_symptom, intensity, note, id } = data
