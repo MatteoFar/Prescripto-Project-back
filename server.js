@@ -9,7 +9,7 @@ dotenv.config()
 const app = express()
 
 import auth from "./routes/auth/auth.js"
-import data from "./routes/data.js"
+import prescription from "./routes/prescription/prescription.js"
 import search from "./routes/search/search.js"
 import appointement from "./routes/appointement/appointement.js"
 import account from "./routes/account/account.js"
@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use("/auth", auth)
-app.use("/data", data)
+app.use("/prescription", prescription)
 app.use("/search", search)
 app.use("/appointement", appointement)
 app.use("/account", account )
