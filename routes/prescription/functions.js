@@ -68,17 +68,17 @@ export async function postPatient_monitoring(Id_Users, id) {
 
 export async function postDrugToPrescription(data) {
     try {
-        const { drug_name, quantity_mg, tablet, Id_Users, time, id } = data
-        const query = `INSERT INTO prescription_drug (drug_name, quantity_mg, created_at, tablet, Id_Doctor, Id_Users, time) VALUES (?, ?, ?, ?, ?, ?, ?)`
+        const { drug_name, quantity_mg, tablet, Id_Users, time, dateEndTreatement, id } = data
+        const query = `INSERT INTO prescription_drug (drug_name, quantity_mg, created_at, tablet, Id_Doctor, Id_Users, time, date_end_treatement) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
         const formatTimeStringToArray = JSON.parse(time.replace(/(\d{1,2}:\d{2})/g, '"$1"')) // à retravailler avec le front-end
         const dateTimeToday = moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
 
         const t = formatTimeStringToArray.map((e) => `"${e}"`)
-        const result = await poolPromise.query(query, [drug_name, quantity_mg, dateTimeToday, tablet, id.doctorId, Id_Users, `[${[t]}]`]);
+        const result = await poolPromise.query(query, [drug_name, quantity_mg, dateTimeToday, tablet, id.doctorId, Id_Users, `[${[t]}]`, dateEndTreatement]);
 
         postDrugToPrescriptionUptake(data, formatTimeStringToArray, result[0].insertId) // add drug to prescription_uptake
 
-        return result[0]
+        //return result[0]
     } catch (error) {
         console.error('err',error)
         throw error
@@ -94,7 +94,10 @@ export async function postDrugToPrescriptionUptake(data, time, Id_Prescription_d
         time.map(async(t) => {
             let time = t.split(":")
             const timeFormat = moment().set('hours', time[0]).set('minutes', time[1]).set('second', 0).format('YYYY-MM-DD HH:mm:ss')
-            await poolPromise.query(query, [drug_name, quantity_mg, tablet, timeFormat, dateTimeToday, Id_Prescription_drug ,Id_Users]);
+            console.log('timeFormat',new Date(timeFormat))
+            if(new Date(timeFormat) > new Date()) {
+                await poolPromise.query(query, [drug_name, quantity_mg, tablet, timeFormat, dateTimeToday, Id_Prescription_drug ,Id_Users]);
+            }
         })
     } catch (error) {
         console.error('err',error)

@@ -64,9 +64,6 @@ router.put("/putPrescriptionDrugUptake", verifyToken, async (req, res) => {
     }
 })
 
-
-
-
 router.get("/getPrescriptionDrug", verifyToken, getPrescriptionDrug)
 router.put("/putPrescriptionDrug", verifyToken, putPrescriptionDrug)
 router.delete("/deletePrescriptionDrug", verifyToken, deletePrescriptionDrug)
@@ -107,7 +104,6 @@ function putPrescriptionDrug(req, res) {
 
         // finir ICI
     })
-
     // put uptake
 }
 
@@ -186,17 +182,6 @@ function postPrescriptionDrugUptake(req, res) {
     // mettre la date du jour dans la table verificationuptake avec le user_id
     // si la date du envoyée est différante de la date inscrit dans la table lancer la requete qui va ajouter les dates du jours
 }
-
-// function getPrescriptionDrugUptake(req, res) {
-//     const { user_id } = req.body
-//     connection.query(`SELECT * from prescription_drug_uptake where user_id = ${user_id}`,function (errors, results) {
-//         if(errors) {
-//             res.status(500).send({type: errorType, message: messageErrorsDatabases})
-//             throw errors
-//         }
-//         res.status(200).send({type:"success", results})
-//     })
-// }
 
 function deletePrescriptionDrugUptake(req,res) {
     const { payload } = req.body
