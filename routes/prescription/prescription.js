@@ -10,17 +10,6 @@ dotenv.config()
 
 const router = express.Router()
 
-const connection = mysql.createConnection({ // mettre dans un fichier appart
-    host: process.env.DB_HOST,
-    user: 'root',
-    password: process.env.DB_PASSWORD,
-    database: 'mypillbox'
-})
-
-connection.connect((error)=>{
-    if(error) throw error;
-});
-
 const errorType = "database"
 const messageErrorsDatabases = "Erreur with database"
 
