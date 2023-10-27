@@ -15,6 +15,38 @@ export async function getPrescription(Id_Users, id) {
     }
 }
 
+export async function deletePrescriptionDrug(data) {
+    try {
+        const { Id_Prescription_drug } = data
+
+        // delete PrescriptionDrugUptake
+        deletePrescriptionDrugUptake(data)
+        // delete PrescriptionDrug
+        const query = `DELETE FROM prescription_drug WHERE Id_Prescription_drug =?`
+        const result = await poolPromise.query(query, [Id_Prescription_drug]);
+    
+        return result[0]
+    } catch (error) {
+        console.error('err',error)
+        throw error
+    }
+}
+
+// delete PrescriptionDrugUptake when PrescriptionDrug is deleted or when user declares not to have taken any medication
+export async function deletePrescriptionDrugUptake(data) {
+    try {
+        const { Id_Prescription_drug_uptake, Id_Prescription_drug } = data
+
+        const query = `DELETE FROM prescription_drug_uptake WHERE Id_Prescription_drug =? OR Id_Prescription_drug_uptake=?`
+        const result = await poolPromise.query(query, [Id_Prescription_drug, Id_Prescription_drug_uptake]);
+    
+        return result[0]
+    } catch (error) {
+        console.error('err',error)
+        throw error
+    }
+}
+
 export async function getPrescriptionByDoctor(Id_Users, id) {
     try {
         console.log(Id_Users, id)

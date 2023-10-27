@@ -4,7 +4,7 @@ import express from "express"
 import moment from "moment"
 
 import verifyToken from "../../middlewares/verifyToken.js"
-import { getIncomingPrescriptionDrugUptake, getPrescriptionDrugUptake, postPrescription, putPrescriptionDrugUptake } from "./functions.js"
+import { deletePrescriptionDrug, getIncomingPrescriptionDrugUptake, getPrescriptionDrugUptake, postPrescription, putPrescriptionDrugUptake } from "./functions.js"
 
 dotenv.config()
 
@@ -53,7 +53,7 @@ router.get("/getIncomingPrescriptionDrugUptake/:user_id", verifyToken, async (re
         res.status(500).send({type: error.status, message: error.message})
     }
 })
-
+// validate PrescriptionDrugUptake
 router.put("/putPrescriptionDrugUptake", verifyToken, async (req, res) => {
     try {
         const p = await putPrescriptionDrugUptake(req.body)
@@ -63,12 +63,19 @@ router.put("/putPrescriptionDrugUptake", verifyToken, async (req, res) => {
         res.status(500).send({type: error.status, message: error.message})
     }
 })
+// delete prescriptionDrug 
+router.delete("/deletePrescriptionDrug", verifyToken, async (req, res) => {
+    try {
+        const p = await deletePrescriptionDrug(req.body)
+        console.log('pppppp',p)
+        res.status(200).send("Médicament supprimé de l'ordonnance avec succée !")
+    } catch (error) {
+        res.status(500).send({type: error.status, message: error.message})
+    }
+})
 
-router.get("/getPrescriptionDrug", verifyToken, getPrescriptionDrug)
 router.put("/putPrescriptionDrug", verifyToken, putPrescriptionDrug)
-router.delete("/deletePrescriptionDrug", verifyToken, deletePrescriptionDrug)
 
-router.post("/postPrescriptionDrugUptake", verifyToken, postPrescriptionDrugUptake)
 router.delete("/deletePrescriptionDrugUptake", verifyToken, deletePrescriptionDrugUptake)
 
 const errorType = "database"
@@ -107,19 +114,19 @@ function putPrescriptionDrug(req, res) {
     // put uptake
 }
 
-function deletePrescriptionDrug(req, res) {
-    const { payload } = req.body
+// function deletePrescriptionDrug(req, res) {
+//     const { payload } = req.body
 
-    connection.query(`DELETE FROM prescription_drug WHERE id = ${payload.data.id.id}`, function (error) {
-        if(error) {
-            res.status(500).send({type: errorType, message: messageErrorsDatabases})
-            throw error
-        }
-        res.status(200).send({type:"success", message: "prescriptionDrug delete with success"})
-    })
+//     connection.query(`DELETE FROM prescription_drug WHERE id = ${payload.data.id.id}`, function (error) {
+//         if(error) {
+//             res.status(500).send({type: errorType, message: messageErrorsDatabases})
+//             throw error
+//         }
+//         res.status(200).send({type:"success", message: "prescriptionDrug delete with success"})
+//     })
 
-    // delete uptake here
-}
+//     // delete uptake here
+// }
 
 // drug_uptake
 

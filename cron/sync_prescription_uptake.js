@@ -56,8 +56,6 @@ async function syncCronPrescriptionUptakes() {
         date: `${today} ${allDataPrsecription[i].time[j]}`,
       };
       try {
-        console.log(allDataPrsecription[i])
-        console.log('test', allDataPrsecription[i].Id_Users)
         if(new Date(today).getDate() < dayDateEndTreatment) {
           await addDrugUptakeCron(data_today, allDataPrsecription[i].Id_Users)
         }
@@ -69,6 +67,7 @@ async function syncCronPrescriptionUptakes() {
   
 }
 
-cron.schedule('* * * * *', () => {
-  syncCronPrescriptionUptakes()
+cron.schedule('0 3 * * *', syncCronPrescriptionUptakes, {
+  scheduled: true,
+  timezone: "Europe/Paris",
 });
