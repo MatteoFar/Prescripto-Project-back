@@ -78,7 +78,7 @@ export async function postDrugToPrescription(data) {
 
         postDrugToPrescriptionUptake(data, formatTimeStringToArray, result[0].insertId) // add drug to prescription_uptake
 
-        //return result[0]
+        return result[0]
     } catch (error) {
         console.error('err',error)
         throw error
