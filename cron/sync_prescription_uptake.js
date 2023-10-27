@@ -11,15 +11,18 @@ async function getAllPrescriptionUptake() {
 }
 
 async function addDrugUptakeCron(data, userId) {
-  let query = "INSERT INTO prescription_drug_uptake (user_id, date, drug_name, quantity_mg, tablet, validation) VALUES(?,?, ?, ?, ?, 0)"
+  const query = `INSERT INTO prescription_drug_uptake (validation, drug_name, quantity_mg, tablet, date_uptake, created_at, Id_Prescription_drug, Id_Users) VALUES (0, ?, ?, ?, ?, ?, ?, ?)`
   console.log(data)
+  const dateTimeToday = moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
 
   const result = await poolPromise.query(query, [
-    userId,
-    data.date,
     data.drug_name,
     data.quantity_mg,
     data.tablet,
+    data.date,
+    dateTimeToday,
+    data.Id_Prescription_drug,
+    userId,
   ])
 
   console.log(result)
@@ -28,8 +31,8 @@ async function addDrugUptakeCron(data, userId) {
 
 async function syncCronPrescriptionUptakes() {
   console.log('running a task every minute');
-  const allDataPrecription = await getAllPrescriptionUptake()
-  allDataPrecription.forEach((eachObj) => {
+  const allDataPrsecription = await getAllPrescriptionUptake()
+  allDataPrsecription.forEach((eachObj) => {
     eachObj.time.forEach((eachTime) => {
       const eachTimeUtc = moment.tz(eachTime, "HH:mm", "Europe/Paris")
       .utc()
@@ -38,19 +41,26 @@ async function syncCronPrescriptionUptakes() {
     })
   })
 
-  console.log(allDataPrecription)
-  for (let i = 0; i < allDataPrecription.length; i++) {
-    let today = new Date().toISOString().split("T")[0];
+  console.log(allDataPrsecription)
 
-    for (let j = 0; j < allDataPrecription[i].time.length; j++) {
+  for (let i = 0; i < allDataPrsecription.length; i++) {
+    let today = new Date().toISOString().split("T")[0];
+    const dayDateEndTreatment = new Date(allDataPrsecription[i].date_end_treatement).getDate()
+
+    for (let j = 0; j < allDataPrsecription[i].time.length; j++) {
       let data_today = {
-        drug_name: allDataPrecription[i].drug_name,
-        quantity_mg: allDataPrecription[i].quantity_mg,
-        tablet: allDataPrecription[i].tablet,
-        date: `${today} ${allDataPrecription[i].time[j]}`,
+        Id_Prescription_drug: allDataPrsecription[i].Id_Prescription_drug,
+        drug_name: allDataPrsecription[i].drug_name,
+        quantity_mg: allDataPrsecription[i].quantity_mg,
+        tablet: allDataPrsecription[i].tablet,
+        date: `${today} ${allDataPrsecription[i].time[j]}`,
       };
       try {
-        await addDrugUptakeCron(data_today, allDataPrecription[i].user_id)
+        console.log(allDataPrsecription[i])
+        console.log('test', allDataPrsecription[i].Id_Users)
+        if(new Date(today).getDate() < dayDateEndTreatment) {
+          await addDrugUptakeCron(data_today, allDataPrsecription[i].Id_Users)
+        }
       } catch (error) {
        console.error(error) 
       }
@@ -59,6 +69,6 @@ async function syncCronPrescriptionUptakes() {
   
 }
 
-// cron.schedule('* * * * *', () => {
-//   syncCronPrescriptionUptakes()
-// });
+cron.schedule('* * * * *', () => {
+  syncCronPrescriptionUptakes()
+});
