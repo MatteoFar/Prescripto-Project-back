@@ -24,6 +24,18 @@ export function authentificationValidation(req, res, next) {
       err.statusCode = 400;
       return next(err);
     }
+
+    if (typeof req.body.password === "") {
+      let err = new Error(JSON.stringify({ msg: "password is empty" }));
+      err.statusCode = 400;
+      return next(err);
+    }
+
+    if (typeof req.body.email === "") {
+      let err = new Error(JSON.stringify({ msg: "email is empty" }));
+      err.statusCode = 400;
+      return next(err);
+    }
   
     next();
   }

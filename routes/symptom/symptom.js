@@ -12,7 +12,6 @@ const router = express.Router()
 router.get("/getSymptom/:user_id", verifyToken, async (req, res) => {
     try {
         const p = await getSymptom(req.params)
-        console.log('PPPPP',p)
         res.status(200).send({data : p})
     } catch (error) {
         console.error(error)
@@ -22,7 +21,6 @@ router.get("/getSymptom/:user_id", verifyToken, async (req, res) => {
 router.get("/getLastsSymptoms/:user_id", verifyToken, async (req, res) => {
     try {
         const p = await getLastsSymptom(req.params)
-        console.log('PPPPP',p)
         res.status(200).send({data : p})
     } catch (error) {
         console.error(error)
@@ -33,7 +31,6 @@ router.get("/getLastsSymptoms/:user_id", verifyToken, async (req, res) => {
 router.post("/postSymptom", verifyToken, async (req, res) => {
     try {
         const p = await postSymptom(req.body)
-        console.log('PPPPP',p)
         res.status(200).send('Symptome enregistré avec succée !')
     } catch (error) {
         console.error(error)

@@ -52,9 +52,9 @@ export async function getIncomingAppointementHistoryUser(data) {
         console.log('dateTimeToday', dateTimeToday)
         const query = 'SELECT * from appointement where Id_Users=? and validation=1 and ? > date_meeting'
 
-        const {users_id} = data
+        const {userId} = data.id
 
-        const result = await poolPromise.query(query, [users_id, dateTimeToday]);
+        const result = await poolPromise.query(query, [userId, dateTimeToday]);
 
         return result[0]
     } catch (error) {
@@ -67,9 +67,9 @@ export async function getIncomingAppointementUser(data) {
     try {
         const query = 'SELECT * from appointement where Id_Users=?'
 
-        const {users_id} = data
+        const {userId} = data.id
 
-        const result = await poolPromise.query(query, [users_id]);
+        const result = await poolPromise.query(query, [userId]);
 
         return result[0]
     } catch (error) {

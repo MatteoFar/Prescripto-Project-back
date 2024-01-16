@@ -17,8 +17,7 @@ const messageErrorsDatabases = "Erreur with database"
 // post postPrescriptionDrug and postPrescriptionDrug_uptake
 router.post("/postPrescriptionDrug", verifyToken, async (req, res) => {
     try {
-        const p = await postPrescription(req.body)
-        console.log('pppppp',p)
+        await postPrescription(req.body)
         res.status(200).send("Médicament et la prise ont été ajoutés dans l'ordonnance avec succée !")
     } catch (error) {
         res.status(500).send({type: error.status, message: error.message})
@@ -28,7 +27,6 @@ router.post("/postPrescriptionDrug", verifyToken, async (req, res) => {
 router.get("/getPrescriptionDrugUptake/:user_id", verifyToken, async (req, res) => {
     try {
         const p = await getPrescriptionDrugUptake(req.params)
-        console.log('pppppp',p)
         res.status(200).send({data : p})
     } catch (error) {
         res.status(500).send({type: error.status, message: error.message})
@@ -39,7 +37,6 @@ router.get("/getPrescriptionDrugUptake/:user_id", verifyToken, async (req, res) 
 router.get("/getIncomingPrescriptionDrugUptake/:user_id", verifyToken, async (req, res) => {
     try {
         const p = await getIncomingPrescriptionDrugUptake(req.params)
-        console.log('pppppp',p)
         res.status(200).send({data : p})
     } catch (error) {
         res.status(500).send({type: error.status, message: error.message})
@@ -48,8 +45,7 @@ router.get("/getIncomingPrescriptionDrugUptake/:user_id", verifyToken, async (re
 // validate PrescriptionDrugUptake
 router.put("/putPrescriptionDrugUptake", verifyToken, async (req, res) => {
     try {
-        const p = await putPrescriptionDrugUptake(req.body)
-        console.log('pppppp',p)
+        await putPrescriptionDrugUptake(req.body)
         res.status(200).send("Prise de médicaments enregistrée avec succée !")
     } catch (error) {
         res.status(500).send({type: error.status, message: error.message})
@@ -58,8 +54,7 @@ router.put("/putPrescriptionDrugUptake", verifyToken, async (req, res) => {
 // delete prescriptionDrug 
 router.delete("/deletePrescriptionDrug", verifyToken, async (req, res) => {
     try {
-        const p = await deletePrescriptionDrug(req.body)
-        console.log('pppppp',p)
+        await deletePrescriptionDrug(req.body)
         res.status(200).send("Médicament supprimé de l'ordonnance avec succée !")
     } catch (error) {
         res.status(500).send({type: error.status, message: error.message})

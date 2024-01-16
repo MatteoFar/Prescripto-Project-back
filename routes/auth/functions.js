@@ -95,7 +95,8 @@ export async function addUserOrDoctor(user) {
 export async function getByUserEmail(email) {
     console.log("user")
     let query = "SELECT * from users where email=?";
-    const result = await poolPromise.query(query, [email]);
+    let formatedQuery = poolPromise.format(query, email)
+    const result = await poolPromise.query(formatedQuery, [email]);
     return result[0];
 }
 

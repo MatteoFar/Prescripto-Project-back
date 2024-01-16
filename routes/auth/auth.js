@@ -66,9 +66,4 @@ router.post("/postDoctor", authentificationValidation, async (req, res) => {
     }
 })
 
-// login doctor
-
-
-
-
 export default router;

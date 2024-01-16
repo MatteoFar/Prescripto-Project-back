@@ -10,7 +10,10 @@ export async function searchDoctor(serchData) {
 
 export async function getDoctorBySearch(data) {
     try {
-        let query = "Select doctor.name as doctor_name, doctor.firstname, doctor.email, doctor.phone, doctor.medical_domain, office.town, office.postal_code from doctor inner join office on doctor.Id_office = office.Id_office where doctor.medical_domain = ? and office.town = ? and office.postal_code = ?;"
+        // récupérer les horaires ici
+        // en faire un tableau de date basé sur les 2 prochaines semaines (essayer un tableau de tableaux)
+        // checker dans la table /getStandyByAppointement
+        let query = "Select doctor.name as doctor_name, doctor.firstname, doctor.email, doctor.phone, doctor.medical_domain, office.adresse, office.town, office.postal_code, office.schedule_morning, office.schedule_afternoon from doctor inner join office on doctor.Id_office = office.Id_office where doctor.medical_domain = ? and office.town = ? and office.postal_code = ?;"
         let {type, postal_code, town} = data
         
         const result = await poolPromise.query(query, [type, town, postal_code]);
